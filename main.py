@@ -32,6 +32,11 @@ def main():
 	dt = 0.0
 
 	while True:
+		keys = pygame.key.get_pressed()
+
+		if keys[pygame.K_ESCAPE]:
+			sys.exit()
+
 		log_state()
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -42,6 +47,12 @@ def main():
 		updatable.update(dt)
 
 		for asteroid in asteroids:
+			if len(shots) > 0:
+				for shot in shots:
+					if shot.collides_with(asteroid):
+						log_event("asteroid_shot")
+						asteroid.kill()
+
 			if asteroid.collides_with(player):
 				log_event("player_hit")
 				print("Game over!")
